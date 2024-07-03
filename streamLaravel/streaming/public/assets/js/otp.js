@@ -2,26 +2,27 @@ document.addEventListener("DOMContentLoaded", function () {
     const observer = new MutationObserver(mutations => {
         mutations.forEach(mutation => {
             if (mutation.addedNodes.length > 0) {
-                for (const addedNode of mutation.addedNodes) {
-                    if (addedNode.nodeType === Node.ELEMENT_NODE && addedNode.id === 'otp-form') {
-                        attachOtpEventListener();
-                        observer.disconnect();
-                        return;
+                mutation.addedNodes.forEach(addedNode => {
+                    if (addedNode.nodeType === Node.ELEMENT_NODE) {
+                        if (addedNode.querySelector('#otp-form')) {
+                            attachOtpEventListener();
+                            observer.disconnect();
+                            return;
+                        }
                     }
-                }
+                });
             }
         });
     });
 
     function attachOtpEventListener() {
         const otpInputs = document.querySelectorAll(".otp-input");
-        // console.log(otpInputs);
         otpInputs.forEach((input, index) => {
             input.addEventListener("keydown", (e) => {
                 if (e.key === "Backspace" && input.value === "") {
                     if (index !== 0) otpInputs[index - 1].focus();
                 }
-            }); 
+            });
             input.addEventListener("input", (e) => {
                 const value = e.target.value;
                 if (value.length > 1) {
@@ -44,8 +45,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 e.preventDefault();
             });
         });
-
     }
+
     observer.observe(document.getElementById('rma-container'), {
         childList: true,
         subtree: true

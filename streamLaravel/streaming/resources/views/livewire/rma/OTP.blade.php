@@ -1,7 +1,7 @@
 <form class="form" id="otp-form">
     <div class="input-container" id="otp-inputs">
         @foreach ($otp_inputs as $key => $otp_input)
-            <input type="number" class="otp-input" maxlength="1" wire:model="otp_inputs.{{ $key }}" />
+            <input type="text" class="otp-input" maxlength="1" wire:model="otp_inputs.{{ $key }}" />
         @endforeach
     </div>
     <div class="button-row">
@@ -9,3 +9,4 @@
         <button class="form-btn btn-cancel" wire:click="verifyOTP" type="button">Next</button>
     </div>
 </form>
+

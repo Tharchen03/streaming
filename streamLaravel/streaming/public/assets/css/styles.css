@@ -166,8 +166,8 @@ footer a:hover {
 }
 
 .otp-form-container {
-    width: 550px;
-    height: 260px;
+    width: 480px;
+    height: auto;
     background-color: #fff;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     border-radius: 10px;
@@ -308,6 +308,10 @@ footer a:hover {
     margin-top: 20px;
 }
 
+.otp-form-container .button-row {
+    padding-right: 45px !important;
+}
+
 .btn-next {
     background: #063a58;
     color: white;
@@ -401,6 +405,14 @@ footer a:hover {
     align-items: center;
 }
 
+.otpWidget {
+    max-width: 100vh;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20vh;
+    align-items: center;
+}
+
 .signUpWidget {
     max-width: 130vh;
     padding: 20px;
@@ -438,10 +450,6 @@ footer a:hover {
     font-size: 18px;
     border: 1px solid #063a58;
     border-radius: 15px;
-}
-
-#otp-form {
-    padding-top: 30px;
 }
 
 .otp-link {
