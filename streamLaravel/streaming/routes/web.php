@@ -17,18 +17,18 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-// Route::get('/', function () {
-//     return view('index');
-// })->name('home');
+Route::get('/', function () {
+    return view('index');
+})->name('home');
 Route::get('/otp', function () {
     return view('otp');
 })->name('otp');
 
-Route::get('/', function () {
-    return view('index')
-        ->withComponent('index')
-        ->withTitle('Screaning');
-})->name('/');
+// Route::get('/', function () {
+//     return view('index')
+//         ->withComponent('index')
+//         ->withTitle('Screaning');
+// })->name('/');
 
 Route::get('/rma', function () {
     return view('livewire.payment')

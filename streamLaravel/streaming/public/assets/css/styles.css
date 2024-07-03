@@ -218,8 +218,9 @@ footer a:hover {
 }
 
 .input {
-    width: 79%;
-    padding: 12px 50px;
+    width: 90%;
+    /* padding: 12px 50px; */
+    padding: 15px 10px 12px 40px;
     border-radius: 5px;
     border: 1px solid #eeeeee;
     outline: 0 !important;
@@ -232,7 +233,7 @@ footer a:hover {
 
 .select {
     width: 100%;
-    padding: 12px 50px;
+    padding: 15px 10px 12px 40px;
     border-radius: 5px;
     border: 1px solid #eeeeee;
     outline: 0 !important;
@@ -256,8 +257,7 @@ footer a:hover {
 .input-container ion-icon {
     position: absolute;
     top: 50%;
-    left: 15px;
-    transform: translateY(-50%);
+    left: 10px;
     color: #bbbbbb;
 }
 
@@ -313,23 +313,33 @@ footer a:hover {
     color: white;
 }
 
+.btn-next:hover {
+    background: white;
+    color: #063a58;
+}
+
 .btn-cancel {
     background: red;
     color: white;
 }
 
+.btn-cancel:hover {
+    background: white;
+    color: red;
+}
+
 .form-btn {
-    padding: 10px 25px 10px 25px;
+    padding: 5px 20px 5px 20px;
     font-family: "SF Pro", sans-serif;
     border-radius: 5px;
     border: 0 !important;
     outline: 0 !important;
     cursor: pointer;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    height: 45px;
+    height: 35px;
     width: auto;
     align-self: center;
-    font-size: 20px;
+    font-size: 16px;
 }
 
 .signup_btn {
@@ -472,7 +482,7 @@ footer a:hover {
     padding-bottom: 15px;
 }
 
-.invalid-feedback{
+.invalid-feedback {
     padding-bottom: 10px;
     font-size: 12px;
     text-align: start;

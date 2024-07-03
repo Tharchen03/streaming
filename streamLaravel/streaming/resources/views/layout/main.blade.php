@@ -17,15 +17,15 @@
     @yield('content')
 
     @include('layout.footer')
-
-
     <script src="../assets/js/jquery-3.4.1.min.js"></script>
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/video.js"></script>
-    <script src="assets/js/otp.js"></script>
+    <script src="../assets/js/otp.js"></script>
     <script src="https://player.vdocipher.com/v2/api.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    @livewireScripts
+    @stack('scripts')
 </body>
 
 </html>

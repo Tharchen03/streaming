@@ -9,7 +9,7 @@
                 <div class="col-md-8 col-lg-6 col-xl-5">
                     <div class="card">
                         @livewire($component, key(rand()))
-                    </div>
+                    </div> 
                     <!-- end card -->
                 </div>
             </div>

@@ -48,7 +48,7 @@
     @csrf
     <label class="labelAuth" for="fullname">Full name</label>
     <div class="input-container">
-        <ion-icon name="person"></ion-icon>
+        <ion-icon style="visibility:initial;" name="person"></ion-icon>
         <input type="text" id="fullname" tabindex="1" class="input @error('fullname') is-invalid @enderror"
             wire:model.lazy='fullname' name='fullname' value="{{ old('fullname') }}" placeholder="Enter full name">
     </div>
@@ -63,7 +63,7 @@
             ticket
         </small></label>
     <div class="input-container">
-        <ion-icon name="person"></ion-icon>
+        <ion-icon style="visibility:initial;" name="mail-outline"></ion-icon>
         <input type="email" id="email" tabindex="1" class="input @error('email') is-invalid @enderror"
             wire:model.lazy='email' name='email' value="{{ old('email') }}" placeholder="Enter email">
     </div>
@@ -74,7 +74,7 @@
     @enderror
     <label class="labelAuth" for="bank">Bank</label>
     <div class="input-container">
-        <ion-icon name="wallet-outline"></ion-icon>
+        <ion-icon style="visibility:initial;" name="wallet-outline"></ion-icon>
         <select id="bank" tabindex="1" class="select @error('bank') is-invalid @enderror" wire:model.lazy='bank'
             name='bank' value="{{ old('bank') }}" placeholder="Select account type">
             <option value=null>Select bank</option>
@@ -92,7 +92,7 @@
 
     <label class="labelAuth" for="account_number">Account number</label>
     <div class="input-container">
-        <ion-icon name="person"></ion-icon>
+        <ion-icon style="visibility:initial;" name="person-circle-outline"></ion-icon>
         <input type="account_number" id="account_number" tabindex="1"
             class="input @error('account_number') is-invalid @enderror" wire:model.lazy='account_number'
             name='account_number' value="{{ old('account_number') }}" placeholder="Enter account number">
@@ -104,7 +104,7 @@
     @enderror
 
     <div class="button-row">
-        <button class="form-btn btn-next" wire:click="cancelPaymentRequest" type="button">Cancel</button>
-        <button class="form-btn btn-cancel" wire:click="makePaymentRequest" type="button">Next</button>
+        <button class="form-btn btn-cancel" wire:click="cancelPaymentRequest" type="button">Cancel</button>
+        <button class="form-btn btn-next" wire:click="makePaymentRequest" type="button">Next</button>
     </div>
 </form>

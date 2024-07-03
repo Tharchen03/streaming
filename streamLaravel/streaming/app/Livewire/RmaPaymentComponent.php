@@ -20,8 +20,8 @@ class RmaPaymentComponent extends Component
     public $fullname;
     #[Validate('required')]
     public $email;
-    #[Validate('required')]
-    public $bfsRemitterOtp;
+    // #[Validate('required')]
+    public $otp, $otp_inputs=[];
     public $arResponse = null;
     public $aeResponse = null;
     public $drResponse = null;
@@ -31,7 +31,7 @@ class RmaPaymentComponent extends Component
 
     public function mount(){
         $this->productName = "Movie";
-        $this->price = 10;
+        $this->price = 1;
         $this->setRequestType('AR');
         $this->makePaymentAR();
     }
@@ -46,9 +46,6 @@ class RmaPaymentComponent extends Component
         $this->bfsMsgType = $requestType;
     }
 
-    private function setDRDetails($otp) {
-        $this->bfsRemitterOtp = $otp;
-    }
 
     private function makePaymentAR() {
         $this->isLoadingNotifier = true;
@@ -67,8 +64,7 @@ class RmaPaymentComponent extends Component
                 }
             }
         }';
-        $paymentService = new RmaPaymentService;
-        $response = $paymentService->makePaymentRequest($query);
+        $response = (new RmaPaymentService)->makePaymentRequest($query);
         // dd(json_decode($response->getBody(),true));
         try {
             $responseBody = json_decode($response->getBody(),true);
@@ -96,9 +92,9 @@ class RmaPaymentComponent extends Component
         $bankListRaw = urldecode(
         $this->arResponse['bfs_bankList'] ?? ''
         );
-        
+
         $banksRaw = explode('~A#', $bankListRaw);
-        
+
         $this->bankList = array_map(function ($bankRaw) use ($banksRaw) {
         $bankDetails = explode('~', $bankRaw);
         return [
@@ -111,9 +107,12 @@ class RmaPaymentComponent extends Component
 
     public function makePaymentRequest(){
         $this->validate();
+        // dd($this->validate());
         $this->isLoadingNotifier = true;
+        $this->otp_inputs = array_fill(0, 6, '');
         $this->setRequestType('AE');
         $this->makePaymentAE();
+
     }
 
     public function cancelPaymentRequest(){
@@ -134,12 +133,12 @@ class RmaPaymentComponent extends Component
                 }
             }
         }';
-        $paymentService = new RmaPaymentService;
 
-        $response = $paymentService->makePaymentRequest($query);
+        $response = (new RmaPaymentService)->makePaymentRequest($query);
         // dd(json_decode($response->getBody(),true));
         try {
-            $jsonData = $response['data']['makeAeRequest'];
+            $responseBody = json_decode($response->getBody(),true);
+            $jsonData = $responseBody['data']['makeAeRequest'];
             if ($jsonData['data'] !== null) {
                 parse_str($jsonData['data'], $this->aeResponse);
 
@@ -158,15 +157,19 @@ class RmaPaymentComponent extends Component
 
         $this->isLoadingNotifier = false;
     }
-
-    private function makePaymentDR() {
+    public function verifyOTP(){
         $this->isLoadingNotifier = true;
+        $this->otp = $this->otp_inputs;
+        $this->setRequestType('DR');
+        $this->makePaymentDR();
+    }
+    
+    private function makePaymentDR() {
 
-        $query = <<<QUERY
-        query {
+        $query = ' query {
             makeDrRequest(input: {
-               txn_id:  "' .$this->bfsTxnId. '"
-                remitter_otp:  "' .$this->bfsRemitterOtp. '"
+                txn_id:  "' .$this->arResponse['bfs_bfsTxnId']. '"
+                remitter_otp:  "' .$this->otp. '"
             }) {
                 data
                 error {
@@ -174,12 +177,13 @@ class RmaPaymentComponent extends Component
                     message
                 }
             }
-        }
-        QUERY;
+        }';
 
-        $response = $this->paymentService->makePaymentRequest($query);
+        $response = (new RmaPaymentService)->makePaymentRequest($query);
+        dd(json_decode($response->getBody(),true));
         try {
-            $jsonData = $response['data']['makeDrRequest'];
+            $responseBody = json_decode($response->getBody(),true);
+            $jsonData = $responseBody['data']['makeDrRequest'];
             if ($jsonData !== null && $jsonData['data'] !== null) {
                 parse_str($jsonData['data'], $this->drResponse);
             } else {

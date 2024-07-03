@@ -9,12 +9,12 @@
                 {{-- @include('livewire.rma.OTP') --}}
                 <form class="form" id="otp-form">
                     <div class="input-container" id="otp-inputs">
-                        <input type="text" class="otp-input" maxlength="1" />
-                        <input type="text" class="otp-input" maxlength="1" />
-                        <input type="text" class="otp-input" maxlength="1" />
-                        <input type="text" class="otp-input" maxlength="1" />
-                        <input type="text" class="otp-input" maxlength="1" />
-                        <input type="text" class="otp-input" maxlength="1" />
+                        <input type="text" class="otp-input" maxlength="1" wire:model.lazy="otp_1" />
+        <input type="text" class="otp-input" maxlength="1" wire:model.lazy="otp_2" />
+        <input type="text" class="otp-input" maxlength="1" wire:model.lazy="otp_3" />
+        <input type="text" class="otp-input" maxlength="1" wire:model.lazy="otp_4" />
+        <input type="text" class="otp-input" maxlength="1" wire:model.lazy="otp_5" />
+        <input type="text" class="otp-input" maxlength="1" wire:model.lazy="otp_6" />
                     </div>
                     <a href="#" class="otp-link">
                         <span class="otp-link-label">Resend otp?</span>
