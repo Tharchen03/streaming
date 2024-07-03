@@ -1,0 +1,12 @@
+# .htaccess
+
+# Add PHP parsing for .html files
+AddType application/x-httpd-php .html
+AddHandler x-httpd-php .html
+
+RewriteEngine On
+
+# Redirect all requests to index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]

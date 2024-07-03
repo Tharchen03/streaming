@@ -1,0 +1,134 @@
+@font-face {
+    font-family: 'SF Pro';
+    src: url('./fonts/SF-Pro.ttf') format('truetype');
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'SF Pro', Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    overflow-x: hidden;
+    /* background-color: #1E5050; */
+    background-image: url('../img/3.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+
+}
+
+.content {
+    max-width: 100vh;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 30vh;
+}
+
+.contentVideo {
+    max-width: 150vh;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 15vh;
+}
+
+
+.store-buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.store-btn {
+    background: black;
+    border: none;
+    cursor: pointer;
+    padding: 5px 5px 5px 25px;
+    color: white;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    margin: 0 10px;
+    width: 175px;
+    border-radius: 6px;
+    font-family: 'SF Pro', sans-serif;
+}
+
+.store-btn:hover {
+    background: white;
+    color: black;
+
+}
+
+
+.store-btn img {
+    height: 35px;
+    margin-right: 10px;
+}
+
+
+ul {
+    padding: 0;
+    margin: 0;
+}
+
+nav,
+main {
+    position: relative;
+    z-index: 1;
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 20px;
+    /* background-color: #333; */
+    color: white;
+}
+
+nav h1 {
+    display: inline-block;
+    margin-left: 10px;
+    text-align: center;
+}
+
+.navM {
+    align-items: center !important;
+}
+
+/* .navM i {
+    font-size: 40px;
+} */
+
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+footer {
+    color: #f5f5f7;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    font-size: 14px;
+}
+
+footer a {
+    text-decoration: none;
+    color: inherit;
+}
+
+footer a:hover {
+    color: black;
+}
