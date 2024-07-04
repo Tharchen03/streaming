@@ -23,7 +23,7 @@ class StripePaymentController extends Controller
         $response = $stripe->checkout->sessions->create([
             'success_url' => $redirectUrl,
 
-            'customer_email' => $request->input('email'),
+            'customer_email' => [],
 
             'payment_method_types' => [
             //  'link',

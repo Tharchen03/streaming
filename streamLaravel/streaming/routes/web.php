@@ -35,7 +35,7 @@ Route::get('/stripePayment', function () {
 })->name('stripe-payment');
 
 
-// ttes
+// stripe route
 Route::controller(StripePaymentController::class)->group(function(){
     Route::get('stripe','stripe')->name('stripe.index');
     Route::get('stripe/checkout','stripeCheckout')->name('stripe.checkout');
