@@ -1,4 +1,4 @@
-<div class="p-2 mt-4" id="rma-container">
+{{-- <div class="p-2 mt-4" id="rma-container">
     @if ($isLoadingNotifier)
         <main class="LoginMain">
             <div class="loginWidget">
@@ -43,4 +43,13 @@
             </main>
         @endif
     @endif
-</div>
+</div> --}}
+
+<main class="LoginMain">
+    <div class="loginWidget">
+        <div class="form-container">
+            <p class="title">Loading.....</p>
+            @include('livewire.stripe.account-selection')
+        </div>
+    </div>
+</main>

@@ -20,15 +20,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('index');
 })->name('home');
-Route::get('/otp', function () {
-    return view('otp');
-})->name('otp');
-
-// Route::get('/', function () {
-//     return view('index')
-//         ->withComponent('index')
-//         ->withTitle('Screaning');
-// })->name('/');
 
 Route::get('/rma', function () {
     return view('livewire.payment')
@@ -36,8 +27,9 @@ Route::get('/rma', function () {
         ->withTitle('RMA Payment');
 })->name('rma-payment');
 
-Route::get('/OTP', function () {
-    return view('livewire.rma.OTP')
-        ->withComponent('OTP')
-        ->withTitle('RMA Payment');
-})->name('OTP');
+Route::get('/stripe', function () {
+    return view('livewire.stripe-payment')
+        ->withComponent('stripe-payment-component')
+        ->withTitle('Stripe Payment');
+})->name('stripe-payment');
+

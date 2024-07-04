@@ -163,7 +163,7 @@ class RmaPaymentComponent extends Component
         $this->setRequestType('DR');
         $this->makePaymentDR();
     }
-    
+
     private function makePaymentDR() {
 
         $query = ' query {

@@ -499,3 +499,8 @@ footer a:hover {
     padding-left: 10px;
     color: red;
 }
+
+.otp-form-container .invalid-feedback {
+    margin-top: -9px !important;
+    padding-left: 45px !important;
+}
