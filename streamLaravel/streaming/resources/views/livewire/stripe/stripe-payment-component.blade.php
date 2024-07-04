@@ -49,7 +49,7 @@
     <div class="loginWidget">
         <div class="form-container">
             <p class="title">Loading.....</p>
-            @include('livewire.stripe.account-selection')
+            @include('livewire.stripe.otp')
         </div>
     </div>
 </main>

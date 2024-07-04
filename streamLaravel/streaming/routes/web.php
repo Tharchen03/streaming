@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\StripePaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,9 +28,16 @@ Route::get('/rma', function () {
         ->withTitle('RMA Payment');
 })->name('rma-payment');
 
-Route::get('/stripe', function () {
+Route::get('/stripePayment', function () {
     return view('livewire.stripe-payment')
         ->withComponent('stripe-payment-component')
         ->withTitle('Stripe Payment');
 })->name('stripe-payment');
 
+
+// ttes
+Route::controller(StripePaymentController::class)->group(function(){
+    Route::get('stripe','stripe')->name('stripe.index');
+    Route::get('stripe/checkout','stripeCheckout')->name('stripe.checkout');
+    Route::get('stripe/checkout/success','stripeCheckoutSuccess')->name('stripe.checkout.success');
+});
