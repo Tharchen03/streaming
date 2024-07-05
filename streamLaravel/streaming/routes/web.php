@@ -22,6 +22,10 @@ Route::get('/', function () {
     return view('index');
 })->name('home');
 
+Route::get('/video', function () {
+    return view('video');
+})->name('video');
+
 Route::get('/rma', function () {
     return view('livewire.payment')
         ->withComponent('rma-payment-component')

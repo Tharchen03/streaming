@@ -7,9 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Streaming</title>
     <link rel="stylesheet" href="../assets/css/styles.css" />
-    <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css" />
     <link rel="stylesheet" href="../assets/css/icomoon.css">
     <link rel="stylesheet" href="../assets/css/video.css" />
+    <link rel="stylesheet" href="../assets/css/responsive.css" />
     @livewireStyles
 </head>
 

@@ -4,7 +4,6 @@
     <div class="content">
         <h1>Your gateway to Watching movies</h1>
         <h2>Choose Your Payment Method</h2>
-        <a href=""></a>
         <div class="store-buttons">
             <button class="store-btn" {{-- onclick="window.location.href='{{ route('stripe-payment') }}'" --}}
                 onclick="window.location.href='{{ route('stripe.checkout', ['price' => 10, 'product' => 'streaming']) }}'">
@@ -15,5 +14,6 @@
                 RMA Payment
             </button>
         </div>
+        <a href="{{ route('video') }}">video Example</a>
     </div>
 </main>

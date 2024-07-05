@@ -1,0 +1,105 @@
+@media (min-width: 768px) and (max-width: 1024px) {
+
+    /* video */
+    .contentVideo {
+        max-width: 72vh;
+        padding: 11px;
+        border-radius: 10px;
+        margin-top: 15vh;
+    }
+
+    /* forms */
+    .loginWidget {
+        margin-top: 20vh;
+    }
+
+    .otpWidget {
+        margin-top: 25vh;
+    }
+
+}
+
+@media (max-width: 767px) {
+    .content h1 {
+        font-size: 1.65rem;
+    }
+
+    .content h2 {
+        font-size: 1.2rem;
+    }
+
+    .store-buttons {
+        padding-top: 20px;
+    }
+
+    nav {
+        padding: 5px;
+    }
+
+    .form-container {
+        width: 360px;
+        padding: 20px 10px;
+    }
+
+    .input {
+        width: 85%;
+    }
+
+    .title {
+        margin: 10px 0 25px 0;
+        font-size: 20px;
+    }
+
+    .loginWidget {
+        margin-top: 15vh;
+    }
+
+    .labelAuth {
+        font-size: 12px;
+    }
+
+    footer {
+        font-size: 12px;
+    }
+
+    nav h1 {
+        font-size: 20px;
+        margin-left: 5px;
+    }
+
+    nav i {
+        font-size: 25px !important;
+    }
+
+    .otp-form-container {
+        width: 375px;
+        padding: 20px 10px;
+    }
+
+    .otp-input {
+        width: 45px;
+        height: 45px;
+    }
+
+    .otp-form-container .button-row {
+        padding-right: 20px !important;
+    }
+
+    .otpWidget {
+        margin-top: 25vh;
+    }
+
+    .otp-form-container .invalid-feedback {
+        padding-left: 25px !important;
+    }
+
+    .contentVideo {
+        max-width: 44vh;
+        margin-top: 20vh;
+    }
+
+    .vdo-container {
+        height: 235px;
+    }
+
+}
