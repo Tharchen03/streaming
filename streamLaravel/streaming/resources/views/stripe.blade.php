@@ -1,7 +1,16 @@
 @extends('layout.main')
 @if (Session::has('success'))
     <div class="alert alert-success">
-        {{ Session::get('success') }}
+        
+        <script>
+            Swal.fire({
+                position: 'bottom-end',
+                icon: 'success',
+                title: '{{ Session::get('success') }}',
+                showConfirmButton: false,
+                timer: 2500
+            });
+        </script>
         @php
             Session::forget('success');
         @endphp
