@@ -1,16 +1,7 @@
 @extends('layout.main')
 @if (Session::has('success'))
-    <div class="alert alert-success">
-        
-        <script>
-            Swal.fire({
-                position: 'bottom-end',
-                icon: 'success',
-                title: '{{ Session::get('success') }}',
-                showConfirmButton: false,
-                timer: 2500
-            });
-        </script>
+    <div class="alert alert-success" style="color: blanchedalmond">
+        {{ Session::get('success') }}
         @php
             Session::forget('success');
         @endphp
