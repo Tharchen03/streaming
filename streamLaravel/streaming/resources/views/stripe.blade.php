@@ -1,11 +1,31 @@
 @extends('layout.main')
-@if (Session::has('success'))
-    <div class="alert alert-success" style="color: blanchedalmond">
+{{-- @if (Session::has('success'))
+    <div class="alert alert-success" style="color: ">
         {{ Session::get('success') }}
         @php
             Session::forget('success');
         @endphp
     </div>
+@endif --}}
+@if ($message = Session::get('success'))
+<script type="text/javascript">
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+
+    Toast.fire({
+        icon: 'success',
+        title: '{{ $message }}'
+    })
+</script>
 @endif
 
 <main class="LoginMain">
@@ -23,5 +43,5 @@
     title: "Your work has been saved",
     showConfirmButton: false,
     timer: 1500
-  });
-   --}}
+  }); --}}
+  
