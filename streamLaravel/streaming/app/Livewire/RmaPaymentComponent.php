@@ -21,6 +21,7 @@ class RmaPaymentComponent extends Component
     public $fullname;
     #[Validate('required')]
     public $email;
+    // #[Validate('required')]
     public $otp, $otp_inputs=[];
     public $arResponse = null;
     public $aeResponse = null;
@@ -45,7 +46,6 @@ class RmaPaymentComponent extends Component
     private function setRequestType($requestType) {
         $this->bfsMsgType = $requestType;
     }
-
 
     private function makePaymentAR() {
         $this->isLoadingNotifier = true;
@@ -172,33 +172,28 @@ class RmaPaymentComponent extends Component
                 }
             }
         }';
-    
+
         $response = (new RmaPaymentService)->makePaymentRequest($query);
-    
+
         try {
             $responseBody = json_decode($response->getBody(), true);
             $jsonData = $responseBody['data']['makeAeRequest'];
-    
+
             if ($jsonData['data'] !== null) {
                 parse_str($jsonData['data'], $this->aeResponse);
-    
-                // Save transaction data to database
-                $emailDetails = [
-                    'name' => $this->fullname,
-                    'product' => $this->productName,
-                    'price' => $this->price,
-                    'subject' => 'Payment Successful',
-                    'email_id' => $this->email,
-                    'payment_type' => 'rma', // Set payment type to 'rma'
-                    'random_text' => substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 10) // Generate random text
-                ];
-                // dd($emailDetails);
-    
-                Payment::create($emailDetails);
-    
-                // Send email
-                send_payment($this->email, 'Payment Successful', $emailDetails);
-    
+
+                // $emailDetails = [
+                //     'name' => $this->fullname,
+                //     'product' => $this->productName,
+                //     'price' => $this->price,
+                //     'subject' => 'Payment Successful',
+                //     'email_id' => $this->email,
+                //     'payment_type' => 'rma',
+                //     'random_text' => substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 10)
+                // ];
+                // Payment::create($emailDetails);
+                // send_payment($this->email, 'Payment Successful', $emailDetails);
+
             } else {
                 $this->aeResponse = [
                     "bfs_responseCode" => "-2",
@@ -211,10 +206,10 @@ class RmaPaymentComponent extends Component
                 "bfs_responseDesc" => "Sorry, something went wrong. Please, try after sometime."
             ];
         }
-    
+
         $this->isLoadingNotifier = false;
     }
-    
+
     public function verifyOTP(){
         $this->validate([
             'otp_inputs' => 'required|array|min:6',
@@ -241,7 +236,7 @@ class RmaPaymentComponent extends Component
         }';
 
         $response = (new RmaPaymentService)->makePaymentRequest($query);
-        // dd(json_decode($response->getBody(),true));
+        dd(json_decode($response->getBody(),true));
         try {
             $responseBody = json_decode($response->getBody(),true);
             $jsonData = $responseBody['data']['makeDrRequest'];

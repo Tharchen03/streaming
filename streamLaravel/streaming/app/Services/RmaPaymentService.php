@@ -8,13 +8,14 @@ class RmaPaymentService {
 
     public function makePaymentRequest($query){
         // $graphiqlEndpoint = 'https://payment.educareskill.com/pg';
-        $graphiqlEndpoint = 'http://10.10.10.227:8000/graphql';
+        $graphiqlEndpoint = 'http://10.10.10.143:8000/graphql';
         $response = (new Client)->post($graphiqlEndpoint,[
         'headers' => [
             'Content-Type'=> 'application/json'
         ],
-        'body'=> json_encode(['query'=>$query])
+        'body'=> json_encode(['query'=>$query]),
         ]);
+        // dd($response);
         return $response;
     }
 }
