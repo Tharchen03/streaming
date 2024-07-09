@@ -25,9 +25,21 @@
         @elseif($bfsMsgType == 'DR')
             <main class="LoginMain">
                 <div class="loginWidget">
+                    @if ($drResponse && isset($drResponse['bfs_responseCode']) && $drResponse['bfs_responseCode'] === '-2')
+                        <div class="form-container">
+                            <p class="title">Payment Status: Failed!</p>
+                            <span class="error-message">{{ $drResponse['bfs_responseDesc'] }} </span><a
+                                href="{{ route('rma-payment') }}" class="btn-cancel">Try again</a>
+                        </div>
+                    @else
                     <div class="form-container">
-                        <p class="title">Payment Status</p>
+                        <p class="title">Payment Status:done</p>
+                        <p class="title">please verify the code that has been sent to ur mail</p>
+                        @include('livewire.rma.verify-code')
+
                     </div>
+                    @endif
+
                 </div>
             </main>
         @else

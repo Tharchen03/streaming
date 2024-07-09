@@ -27,6 +27,7 @@ class RmaPaymentComponent extends Component
     public $aeResponse = null;
     public $drResponse = null;
     public $price;
+    public $code; 
     public $productName;
     public $isLoadingNotifier = false;
 
@@ -46,6 +47,7 @@ class RmaPaymentComponent extends Component
     private function setRequestType($requestType) {
         $this->bfsMsgType = $requestType;
     }
+
 
     private function makePaymentAR() {
         $this->isLoadingNotifier = true;
@@ -181,19 +183,6 @@ class RmaPaymentComponent extends Component
 
             if ($jsonData['data'] !== null) {
                 parse_str($jsonData['data'], $this->aeResponse);
-
-                // $emailDetails = [
-                //     'name' => $this->fullname,
-                //     'product' => $this->productName,
-                //     'price' => $this->price,
-                //     'subject' => 'Payment Successful',
-                //     'email_id' => $this->email,
-                //     'payment_type' => 'rma',
-                //     'random_text' => substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 10)
-                // ];
-                // Payment::create($emailDetails);
-                // send_payment($this->email, 'Payment Successful', $emailDetails);
-
             } else {
                 $this->aeResponse = [
                     "bfs_responseCode" => "-2",
@@ -236,26 +225,81 @@ class RmaPaymentComponent extends Component
         }';
 
         $response = (new RmaPaymentService)->makePaymentRequest($query);
-        dd(json_decode($response->getBody(),true));
+        // dd(json_decode($response->getBody(),true));
         try {
-            $responseBody = json_decode($response->getBody(),true);
+            $responseBody = json_decode($response->getBody(), true);
             $jsonData = $responseBody['data']['makeDrRequest'];
-            if ($jsonData !== null && $jsonData['data'] !== null) {
+        
+            if ($jsonData !== null) {
                 parse_str($jsonData['data'], $this->drResponse);
+        
+                // Check if transaction data is present and valid
+                if (isset($this->drResponse['bfs_debitAuthCode']) && $this->drResponse['bfs_debitAuthCode'] === '00') {
+                    // Process successful payment response
+                    // Here you handle successful transaction logic
+                        $emailDetails = [
+                            'name' => $this->fullname,
+                            'product' => $this->productName,
+                            'price' => $this->price,
+                            'subject' => 'Payment Successful',
+                            'email_id' => $this->email,
+                            'payment_type' => 'rma',
+                            'random_text' => substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 10) 
+                        ];
+                        Payment::create($emailDetails);
+                        send_payment($this->email, 'Payment Successful', $emailDetails);
+                } else {
+                    // Handle failed OTP verification
+                    $this->drResponse = [
+                        "bfs_responseCode" => "-2",
+                        "bfs_responseDesc" => "OTP verification failed. Please try again."
+                    ];
+                }
             } else {
+                // Handle case where $jsonData is null or data is missing
                 $this->drResponse = [
-                    "bfs_responseCode" => "-2",
-                    "bfs_responseDesc" => "Sorry, something went wrong. Please, try after sometime."
+                    "bfs_responseCode" => "-1",
+                    "bfs_responseDesc" => "An error occurred. Please try again later."
                 ];
             }
         } catch (\Exception $error) {
+            // Handle exception
             $this->drResponse = [
                 "bfs_responseCode" => "-1",
-                "bfs_responseDesc" => "Sorry, something went wrong. Please, try after sometime."
+                "bfs_responseDesc" => "An error occurred. Please try again later."
             ];
         }
+            // dd($this->drResponse);
+
         $this->isLoadingNotifier = false;
     }
+
+    public function verifyCode()
+{
+    $this->validate([
+        'code' => 'required|string',
+    ]);
+
+    try {
+        $payment = Payment::where('random_text', $this->code)->first();
+
+        if ($payment) {
+            if ($payment->payment_type === 'rma' && !$payment->is_verified) {
+                $payment->update(['is_verified' => true]);
+
+                return redirect('/'); 
+            } else {
+                $this->addError('code', 'Verification code is already used or invalid.');
+            }
+        } else {
+            $this->addError('code', 'Verification code is incorrect.');
+        }
+    } catch (\Exception $e) {
+        $this->addError('code', 'Verification code could not be verified.');
+    }
+}
+
+
 
     public function getResponseDescription($responseCode) {
         switch ($responseCode) {

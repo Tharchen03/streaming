@@ -22,9 +22,6 @@ Route::get('/', function () {
     return view('index');
 })->name('home');
 
-Route::get('/video', function () {
-    return view('video');
-})->name('video');
 
 Route::get('/rma', function () {
     return view('livewire.payment')
@@ -44,4 +41,20 @@ Route::controller(StripePaymentController::class)->group(function(){
     Route::get('stripe','stripe')->name('stripe.index');
     Route::get('stripe/checkout','stripeCheckout')->name('stripe.checkout');
     Route::get('stripe/checkout/success','stripeCheckoutSuccess')->name('stripe.checkout.success');
+    Route::post('/stripe/verify',  'verify')->name('stripe.verify');
 });
+
+
+Route::get('/verify', function () {
+    return view('verify-code-stripe');
+})->name('verify');
+
+
+Route::get('/video', function () {
+    return view('video');
+})->name('video')->middleware('verify.access');
+
+Route::get('/unauthorized', function () {
+    return 'Unauthorized access';
+})->name('unauthorized');
+

@@ -23,7 +23,7 @@ class StripePaymentController extends Controller
             'success_url' => $redirectUrl,
             'customer_email' => [],
             'payment_method_types' => [
-            //  'link',
+             'link',
             'card'
         ],
             'line_items' => [
@@ -46,14 +46,6 @@ class StripePaymentController extends Controller
         return redirect($response['url']);
     }
 
-    // public function stripeCheckoutSuccess(Request $request)
-    // {
-    //     $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
-    //     $response = $stripe->checkout->sessions->retrieve($request->session_id);
-    //     // dd($response);
-    //     return redirect()->route('stripe.index')
-    //                         ->with('success','Payment successful.');
-    // }
     public function stripeCheckoutSuccess(Request $request)
     {
         $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
@@ -75,7 +67,27 @@ class StripePaymentController extends Controller
         Payment::create($emailDetails);
         // dd(Payment::create($emailDetails));
         send_payment($customerEmail, 'Payment Successful', $emailDetails);
-        return redirect()->route('stripe.index')->with('success', 'Payment successful.');
+        return redirect()->route('verify')->with('success', 'Payment successful.');
+        // return view('verify-code-stripe', ['customerEmail' => $customerEmail]);
+
     }
+
+    public function verify(Request $request)
+    {
+        $request->validate([
+            'code' => 'required|string',
+        ]);
+    
+        $payment = Payment::where('random_text', $request->code)->first();
+    
+        if ($payment) {
+            session(['verified' => true]);
+            return redirect('video'); 
+        } else {
+            return redirect()->back()->withErrors(['code' => 'Verification code is incorrect.']);
+        }
+    }
+    
+
 
 }

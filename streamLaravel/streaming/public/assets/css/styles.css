@@ -504,3 +504,31 @@ footer a:hover {
     margin-top: -9px !important;
     padding-left: 45px !important;
 }
+
+.input-verify {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.input-verify ion-icon {
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #3a3838;
+    width: 25px;
+    /* padding: 0px 0px 15px 0px !important; */
+}
+
+.input-V {
+    width: 100%;
+    padding: 12px 15px 12px 35px;
+    border-radius: 5px;
+    border: 1px solid #eeeeee;
+    outline: 0 !important;
+    background-color: #eeeeee;
+    letter-spacing: .3px;
+    font-size: 12px;
+    font-weight: 500;
+    height: 45px;
+}
