@@ -532,3 +532,13 @@ footer a:hover {
     font-weight: 500;
     height: 45px;
 }
+
+.content a{
+    text-transform: none;
+    text-decoration: none;
+    color: gold;
+}
+
+.content a:hover{
+    color: white;
+}

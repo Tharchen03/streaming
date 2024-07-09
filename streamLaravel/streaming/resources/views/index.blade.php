@@ -14,6 +14,5 @@
                 RMA Payment
             </button>
         </div>
-        <a href="{{ route('video') }}">video Example</a>
     </div>
 </main>

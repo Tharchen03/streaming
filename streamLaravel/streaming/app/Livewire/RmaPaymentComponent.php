@@ -275,30 +275,27 @@ class RmaPaymentComponent extends Component
     }
 
     public function verifyCode()
-{
-    $this->validate([
-        'code' => 'required|string',
-    ]);
-
-    try {
-        $payment = Payment::where('random_text', $this->code)->first();
-
-        if ($payment) {
-            if ($payment->payment_type === 'rma' && !$payment->is_verified) {
-                $payment->update(['is_verified' => true]);
-
-                return redirect('/'); 
+    {
+        $this->validate([
+            'code' => 'required|string',
+        ]);
+        try {
+            $payment = Payment::where('random_text', $this->code)->first();
+            if ($payment) {
+                if ($payment->payment_type === 'rma' && !$payment->is_verified) {
+                    $payment->update(['is_verified' => true]);
+                    session(['verified' => true, 'availability_date' => '2024-07-09']);
+                    return redirect('/video');
+                } else {
+                    $this->addError('code', 'Verification code is already used or invalid.');
+                }
             } else {
-                $this->addError('code', 'Verification code is already used or invalid.');
+                $this->addError('code', 'Verification code is incorrect.');
             }
-        } else {
-            $this->addError('code', 'Verification code is incorrect.');
+        } catch (\Exception $e) {
+            $this->addError('code', 'Verification code could not be verified.');
         }
-    } catch (\Exception $e) {
-        $this->addError('code', 'Verification code could not be verified.');
     }
-}
-
 
 
     public function getResponseDescription($responseCode) {

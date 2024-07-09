@@ -77,17 +77,18 @@ class StripePaymentController extends Controller
         $request->validate([
             'code' => 'required|string',
         ]);
-    
+
         $payment = Payment::where('random_text', $request->code)->first();
-    
+
         if ($payment) {
-            session(['verified' => true]);
+            // Set a session variable to indicate successful verification and store the availability date
+            session(['verified' => true, 'availability_date' => '2024-07-10']);
             return redirect('video'); 
         } else {
             return redirect()->back()->withErrors(['code' => 'Verification code is incorrect.']);
         }
     }
-    
+
 
 
 }

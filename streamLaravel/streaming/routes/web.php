@@ -49,12 +49,17 @@ Route::get('/verify', function () {
     return view('verify-code-stripe');
 })->name('verify');
 
-
 Route::get('/video', function () {
     return view('video');
-})->name('video')->middleware('verify.access');
+})->name('video')->middleware(['verify.access', 'verify.date']);
 
 Route::get('/unauthorized', function () {
-    return 'Unauthorized access';
+    return view('unauthorized');
 })->name('unauthorized');
+
+Route::get('/waiting', function () {
+    return view('waiting');
+})->name('waiting');
+
+
 
