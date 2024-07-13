@@ -70,56 +70,7 @@ class StripePaymentController extends Controller
         send_payment($customerEmail, 'Payment Successful', $emailDetails);
         return redirect()->route('verify')->with('success', 'Payment successful.');
         // return view('verify-code-stripe', ['customerEmail' => $customerEmail]);
-
     }
-
-    // public function verify(Request $request)
-    // {
-    //     $request->validate([
-    //         'code' => 'required|string',
-    //     ]);
-
-    //     $payment = Payment::where('random_text', $request->code)->first();
-
-    //     if ($payment) {
-    //         // Set a session variable to indicate successful verification and store the availability date
-    //         session(['verified' => true, 'availability_date' => '2024-07-10']);
-    //         return redirect('video');
-    //     } else {
-    //         return redirect()->back()->withErrors(['code' => 'Verification code is incorrect.']);
-    //     }
-    // }
-
-    // public function verify(Request $request)
-    // {
-    //     $request->validate([
-    //         'code' => 'required|string',
-    //     ]);
-
-    //     $payment = Payment::where('random_text', $request->code)->first();
-
-    //     if ($payment) {
-    //         // Save session data to the database
-    //         UserSession::create([
-    //             'payment_id' => $payment->id,
-    //             'session_key' => 'verified',
-    //             'ip_address' => $request->ip(),
-    //             'session_value' => 'true',
-    //         ]);
-
-    //         // Store payment ID and availability date in session
-    //         session([
-    //             'payment_id' => $payment->id,
-    //             'verified' => true,
-    //             'availability_date' => '2024-07-07', // Set the specific date
-    //         ]);
-    //         session(['payment_id' => $payment->id]);
-
-    //         return redirect('video');
-    //     } else {
-    //         return redirect()->back()->withErrors(['code' => 'Verification code is incorrect.']);
-    //     }
-    // }
 
     public function verify(Request $request)
     {
