@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Stripe;
-use Illuminate\View\View;
 use App\Models\Payment;
+use Illuminate\View\View;
+use App\Models\UserSession;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 
 class StripePaymentController extends Controller
@@ -24,7 +26,7 @@ class StripePaymentController extends Controller
             'customer_email' => [],
             'payment_method_types' => [
              'link',
-            'card'
+            'card',
         ],
             'line_items' => [
                 [
@@ -42,7 +44,6 @@ class StripePaymentController extends Controller
             'mode' => 'payment',
             'allow_promotion_codes' => true,
         ]);
-
         return redirect($response['url']);
     }
 
@@ -52,7 +53,7 @@ class StripePaymentController extends Controller
         $response = $stripe->checkout->sessions->retrieve($request->session_id, ['expand' => ['customer']]);
         $customerEmail = $response->customer_details->email;
         $customerName = $response->customer_details->name;
-        // $product = $response->line_items->data[0]->description; 
+        // $product = $response->line_items->data[0]->description;
         $price = $response->amount_total;
         $randomText = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 10);
         $emailDetails = [
@@ -72,23 +73,81 @@ class StripePaymentController extends Controller
 
     }
 
+    // public function verify(Request $request)
+    // {
+    //     $request->validate([
+    //         'code' => 'required|string',
+    //     ]);
+
+    //     $payment = Payment::where('random_text', $request->code)->first();
+
+    //     if ($payment) {
+    //         // Set a session variable to indicate successful verification and store the availability date
+    //         session(['verified' => true, 'availability_date' => '2024-07-10']);
+    //         return redirect('video');
+    //     } else {
+    //         return redirect()->back()->withErrors(['code' => 'Verification code is incorrect.']);
+    //     }
+    // }
+
+    // public function verify(Request $request)
+    // {
+    //     $request->validate([
+    //         'code' => 'required|string',
+    //     ]);
+
+    //     $payment = Payment::where('random_text', $request->code)->first();
+
+    //     if ($payment) {
+    //         // Save session data to the database
+    //         UserSession::create([
+    //             'payment_id' => $payment->id,
+    //             'session_key' => 'verified',
+    //             'ip_address' => $request->ip(),
+    //             'session_value' => 'true',
+    //         ]);
+
+    //         // Store payment ID and availability date in session
+    //         session([
+    //             'payment_id' => $payment->id,
+    //             'verified' => true,
+    //             'availability_date' => '2024-07-07', // Set the specific date
+    //         ]);
+    //         session(['payment_id' => $payment->id]);
+
+    //         return redirect('video');
+    //     } else {
+    //         return redirect()->back()->withErrors(['code' => 'Verification code is incorrect.']);
+    //     }
+    // }
+
     public function verify(Request $request)
     {
         $request->validate([
             'code' => 'required|string',
         ]);
-
         $payment = Payment::where('random_text', $request->code)->first();
-
         if ($payment) {
-            // Set a session variable to indicate successful verification and store the availability date
-            session(['verified' => true, 'availability_date' => '2024-07-10']);
-            return redirect('video'); 
+            // Save session data to the database
+            UserSession::create([
+                'payment_id' => $payment->id,
+                'session_key' => 'verified',
+                'ip_address' => $request->ip(),
+                'session_value' => 'true',
+            ]);
+
+            // Store payment ID and availability date in session
+            session([
+                'payment_id' => $payment->id,
+                'verified' => true,
+                'availability_date' => '2024-09-02', // Set the specific date
+            ]);
+            session(['payment_id' => $payment->id]);
+
+            return redirect('video');
         } else {
             return redirect()->back()->withErrors(['code' => 'Verification code is incorrect.']);
         }
     }
-
-
-
 }
+

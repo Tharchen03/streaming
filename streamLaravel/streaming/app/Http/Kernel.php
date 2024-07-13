@@ -66,6 +66,8 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'verify.access' => \App\Http\Middleware\VerifyAccess::class,
-        'verify.date' => \App\Http\Middleware\VerifyDate::class, // Add this line
+        'verify.date' => \App\Http\Middleware\VerifyDate::class, 
+        'restore.session' => \App\Http\Middleware\RestoreSession::class,
+
     ];
 }

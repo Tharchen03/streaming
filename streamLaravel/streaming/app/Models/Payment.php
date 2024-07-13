@@ -9,6 +9,11 @@ class Payment extends Model
     protected $collection = 'payments';
 
     protected $fillable = [
-        'name', 'product', 'price', 'subject', 'email_id', 'payment_type','random_text'
+        'name', 'product', 'price', 'subject', 'email_id', 'payment_type', 'random_text'
     ];
+
+    public function userSessions()
+    {
+        return $this->hasMany(UserSession::class, 'payment_id');
+    }
 }

@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="../assets/css/icomoon.css">
     <link rel="stylesheet" href="../assets/css/video.css" />
     <link rel="stylesheet" href="../assets/css/responsive.css" />
+    <link rel="stylesheet" href="../assets/css/loading.css" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @livewireStyles
 </head>
 
@@ -28,7 +30,38 @@
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {{-- <script>
+        let loadingCanceled = false;
 
+        function handleButtonClick(url) {
+            showLoader();
+            setTimeout(() => {
+                if (!loadingCanceled) {
+                    window.location.href = url;
+                }
+            }, 1000);
+        }
+
+        function showLoader() {
+            loadingCanceled = false; // Reset the flag
+            document.getElementById('loader').style.display = 'flex';
+        }
+
+        function cancelLoading() {
+            loadingCanceled = true;
+            hideLoader();
+        }
+
+        function hideLoader() {
+            document.getElementById('loader').style.display = 'none';
+        }
+
+        document.querySelector('form').addEventListener('submit', function(event) {
+        if (loadingCanceled) {
+            event.preventDefault();
+        }
+    });
+    </script> --}}
     @livewireScripts
     @stack('scripts')
 

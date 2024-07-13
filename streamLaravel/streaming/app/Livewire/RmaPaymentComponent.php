@@ -6,6 +6,10 @@ use Livewire\Component;
 use Livewire\Attributes\Validate;
 use App\Services\RmaPaymentService;
 use App\Models\Payment;
+use App\Models\UserSession;
+use Illuminate\Http\Request;
+
+
 
 class RmaPaymentComponent extends Component
 {
@@ -27,7 +31,7 @@ class RmaPaymentComponent extends Component
     public $aeResponse = null;
     public $drResponse = null;
     public $price;
-    public $code; 
+    public $code;
     public $productName;
     public $isLoadingNotifier = false;
 
@@ -229,10 +233,10 @@ class RmaPaymentComponent extends Component
         try {
             $responseBody = json_decode($response->getBody(), true);
             $jsonData = $responseBody['data']['makeDrRequest'];
-        
+
             if ($jsonData !== null) {
                 parse_str($jsonData['data'], $this->drResponse);
-        
+
                 // Check if transaction data is present and valid
                 if (isset($this->drResponse['bfs_debitAuthCode']) && $this->drResponse['bfs_debitAuthCode'] === '00') {
                     // Process successful payment response
@@ -244,7 +248,7 @@ class RmaPaymentComponent extends Component
                             'subject' => 'Payment Successful',
                             'email_id' => $this->email,
                             'payment_type' => 'rma',
-                            'random_text' => substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 10) 
+                            'random_text' => substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 10)
                         ];
                         Payment::create($emailDetails);
                         send_payment($this->email, 'Payment Successful', $emailDetails);
@@ -274,7 +278,7 @@ class RmaPaymentComponent extends Component
         $this->isLoadingNotifier = false;
     }
 
-    public function verifyCode()
+    public function verifyCode(Request $request)
     {
         $this->validate([
             'code' => 'required|string',
@@ -283,8 +287,20 @@ class RmaPaymentComponent extends Component
             $payment = Payment::where('random_text', $this->code)->first();
             if ($payment) {
                 if ($payment->payment_type === 'rma' && !$payment->is_verified) {
-                    $payment->update(['is_verified' => true]);
-                    session(['verified' => true, 'availability_date' => '2024-07-09']);
+                    UserSession::create([
+                        'payment_id' => $payment->id,
+                        'session_key' => 'verified',
+                        'ip_address' => $request->ip(),
+                        'session_value' => 'true',
+                    ]);
+
+                    // Store payment ID and availability date in session
+                    session([
+                        'payment_id' => $payment->id,
+                        'verified' => true,
+                        'availability_date' => '2024-09-02', // Set the specific date
+                    ]);
+                    session(['payment_id' => $payment->id]);
                     return redirect('/video');
                 } else {
                     $this->addError('code', 'Verification code is already used or invalid.');

@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StripePaymentController;
 
@@ -61,5 +62,18 @@ Route::get('/waiting', function () {
     return view('waiting');
 })->name('waiting');
 
+Route::get('/test-db', function () {
+    try {
+        DB::connection()->getPdo();
+        return 'Database connection is working!';
+    } catch (\Exception $e) {
+        return 'Could not connect to the database. Error: ' . $e->getMessage();
+    }
+});
+
+// Route::middleware(['restore.session'])->group(function () {
+//     Route::get('/video', [StripePaymentController::class, 'show']);
+//     // Add other routes that require session restoration
+// });
 
 
