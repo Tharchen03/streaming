@@ -187,7 +187,7 @@ return [
     ])->toArray(),
 
      //Backend Server and CMS
-    //  'media_server' => env('MEDIA_SERVER'),
-    //  'media_server_secret' => env('MEDIA_SERVER_SECRET'),
+     'media_server' => env('MEDIA_SERVER'),
+     'media_server_secret' => env('MEDIA_SERVER_SECRET'),
 
 ];
