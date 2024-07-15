@@ -2,13 +2,14 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
-use Livewire\Attributes\Validate;
-use App\Services\RmaPaymentService;
 use App\Models\Payment;
+use Livewire\Component;
 use App\Models\UserSession;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Carbon;
+use Livewire\Attributes\Validate;
+use App\Services\VdoCipherService;
+use App\Services\RmaPaymentService;
 
 
 class RmaPaymentComponent extends Component
@@ -34,12 +35,15 @@ class RmaPaymentComponent extends Component
     public $code;
     public $productName;
     public $isLoadingNotifier = false;
+    protected $vdoCipher;
 
-    public function mount(){
+    public function mount()
+    {
         $this->productName = "Movie";
         $this->price = 1;
         $this->setRequestType('AR');
         $this->makePaymentAR();
+        
     }
 
     public function render()
@@ -124,45 +128,6 @@ class RmaPaymentComponent extends Component
     public function cancelPaymentRequest(){
        return  redirect()->route('home');
     }
-
-    // private function makePaymentAE() {
-    //     $query = 'query {
-    //         makeAeRequest(input: {
-    //             txn_id:  "' .$this->arResponse['bfs_bfsTxnId']. '"
-    //             remitter_bank_id:  "' .$this->bank. '"
-    //             remitter_acc_no:  "' .$this->account_number. '"
-    //         }) {
-    //             data
-    //             error {
-    //                 code
-    //                 message
-    //             }
-    //         }
-    //     }';
-
-    //     $response = (new RmaPaymentService)->makePaymentRequest($query);
-    //     // dd(json_decode($response->getBody(),true));
-    //     try {
-    //         $responseBody = json_decode($response->getBody(),true);
-    //         $jsonData = $responseBody['data']['makeAeRequest'];
-    //         if ($jsonData['data'] !== null) {
-    //             parse_str($jsonData['data'], $this->aeResponse);
-
-    //         } else {
-    //             $this->aeResponse = [
-    //                 "bfs_responseCode" => "-2",
-    //                 "bfs_responseDesc" => "Sorry, something went wrong. Please, try after sometime."
-    //             ];
-    //         }
-    //     } catch (\Exception $error) {
-    //         $this->aeResponse = [
-    //             "bfs_responseCode" => "-1",
-    //             "bfs_responseDesc" => "Sorry, something went wrong. Please, try after sometime."
-    //         ];
-    //     }
-
-    //     $this->isLoadingNotifier = false;
-    // }
 
     private function makePaymentAE() {
         $query = 'query {
@@ -286,30 +251,36 @@ class RmaPaymentComponent extends Component
         try {
             $payment = Payment::where('random_text', $this->code)->first();
             if ($payment) {
-                if ($payment->payment_type === 'rma' && !$payment->is_verified) {
-                    UserSession::create([
-                        'payment_id' => $payment->id,
-                        'session_key' => 'verified',
-                        'ip_address' => $request->ip(),
-                        'session_value' => 'true',
-                    ]);
+                UserSession::create([
+                    'payment_id' => $payment->id,
+                    'session_key' => 'verified',
+                    'ip_address' => $request->ip(),
+                    'session_value' => 'true',
+                ]);
 
-                    // Store payment ID and availability date in session
-                    session([
-                        'payment_id' => $payment->id,
-                        'verified' => true,
-                        'availability_date' => '2024-09-02', // Set the specific date
-                    ]);
-                    session(['payment_id' => $payment->id]);
-                    return redirect('/video');
-                } else {
-                    $this->addError('code', 'Verification code is already used or invalid.');
-                }
+                $startDateTime = Carbon::create(2024, 7, 15, 15, 01, 0, 'Asia/Thimphu');
+                $endDateTime = Carbon::create(2024, 7, 15, 24, 10, 50, 'Asia/Thimphu');
+
+                session([
+                    'payment_id' => $payment->id,
+                    'verified' => true,
+                    'availability_start' => $startDateTime,
+                    'availability_end' => $endDateTime,
+                ]);
+
+                $videoId = 'f2c1b44e9ed24d08972bcc8cefea38fb'; 
+                $videoDetails = (new VdoCipherService)->getVideoById($videoId);
+                session([
+                    'otp' => $videoDetails['otp'],
+                    'playbackInfo' => $videoDetails['playbackInfo'],
+                ]);
+
+                return redirect()->route('video');
             } else {
-                $this->addError('code', 'Verification code is incorrect.');
+                return redirect()->back()->withErrors(['code' => 'Verification code is incorrect.']);
             }
         } catch (\Exception $e) {
-            $this->addError('code', 'Verification code could not be verified.');
+            return redirect()->back()->withErrors(['code' => 'Verification code is incorrect.']);
         }
     }
 

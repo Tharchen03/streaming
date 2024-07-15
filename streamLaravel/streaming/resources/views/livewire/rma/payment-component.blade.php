@@ -33,8 +33,8 @@
                         </div>
                     @else
                     <div class="form-container">
-                        <p class="title">Payment Status:done</p>
-                        <p class="title">please verify the code that has been sent to ur mail</p>
+                        <p class="title">Please enter the code sent to your mail.</p>
+                        {{-- <p class="title">please verify the code that has been sent to ur mail</p> --}}
                         @include('livewire.rma.verify-code')
 
                     </div>

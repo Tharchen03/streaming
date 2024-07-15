@@ -141,48 +141,43 @@ class StripePaymentController extends Controller
     // }
 
     public function verify(Request $request)
-{
-    $request->validate([
-        'code' => 'required|string',
-    ]);
-
-    $payment = Payment::where('random_text', $request->code)->first();
-    if ($payment) {
-        UserSession::create([
-            'payment_id' => $payment->id,
-            'session_key' => 'verified',
-            'ip_address' => $request->ip(),
-            'session_value' => 'true',
+    {
+        $request->validate([
+            'code' => 'required|string',
         ]);
 
-        // Set specific availability start and end times (2:40 PM and 2:50 PM in Asia/Thimphu timezone)
-        $startDateTime = Carbon::create(2024, 7, 15, 15, 01,0,  'Asia/Thimphu');
-        $endDateTime = Carbon::create(2024, 7, 15, 15, 10,50, 'Asia/Thimphu');
-            dump($startDateTime, $endDateTime);
+        $payment = Payment::where('random_text', $request->code)->first();
+        if ($payment) {
+            UserSession::create([
+                'payment_id' => $payment->id,
+                'session_key' => 'verified',
+                'ip_address' => $request->ip(),
+                'session_value' => 'true',
+            ]);
 
+            $startDateTime = Carbon::create(2024, 7, 15, 15, 01,0,  'Asia/Thimphu');
+            $endDateTime = Carbon::create(2024, 7, 15, 23, 10,50, 'Asia/Thimphu');
+                dump($startDateTime, $endDateTime);
 
-        // Store data in session
-        session([
-            'payment_id' => $payment->id,
-            'verified' => true,
-            'availability_start' => $startDateTime,
-            'availability_end' => $endDateTime,
-        ]);
+            session([
+                'payment_id' => $payment->id,
+                'verified' => true,
+                'availability_start' => $startDateTime,
+                'availability_end' => $endDateTime,
+            ]);
 
-        // Get video details
-        $videoId = 'f2c1b44e9ed24d08972bcc8cefea38fb'; 
-        $videoDetails = $this->vdoCipher->getVideoById($videoId);
-        session([
-            'otp' => $videoDetails['otp'],
-            'playbackInfo' => $videoDetails['playbackInfo'],
-        ]);
+            // Get video details
+            $videoId = 'f2c1b44e9ed24d08972bcc8cefea38fb'; 
+            $videoDetails = $this->vdoCipher->getVideoById($videoId);
+            dd($videoDetails);
+            session([
+                'otp' => $videoDetails['otp'],
+                'playbackInfo' => $videoDetails['playbackInfo'],
+            ]);
 
-        return redirect()->route('video');
-    } else {
-        return redirect()->back()->withErrors(['code' => 'Verification code is incorrect.']);
+            return redirect()->route('video');
+        } else {
+            return redirect()->back()->withErrors(['code' => 'Verification code is incorrect.']);
+        }
     }
-}
-
-
-
 }

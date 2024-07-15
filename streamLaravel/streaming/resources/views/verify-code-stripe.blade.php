@@ -2,7 +2,7 @@
 <main class="LoginMain">
     <div class="loginWidget">
         <div class="form-container">
-            <p class="title">Please enter the code sent to ur mail.</p>
+            <p class="title">Please enter the code sent to your mail.</p>
             @if(session('success'))
                 <p>{{ session('success') }}</p>
             @endif

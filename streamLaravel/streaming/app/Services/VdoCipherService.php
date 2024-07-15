@@ -27,7 +27,8 @@ class VdoCipherService
             ];
 
             $postData = [
-                "ttl" => 300
+                // "ttl" => 300
+                "ttl" => 24 * 3600
             ];
                 $postData["annotate"] = json_encode([[
                     'type' => 'rtext',

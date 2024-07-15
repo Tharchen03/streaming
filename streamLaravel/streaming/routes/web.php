@@ -85,17 +85,16 @@ Route::get('/waiting', function () {
     $currentDate = Carbon::now('Asia/Thimphu');
 
     if ($currentDate->lt($availabilityStart)) {
-        // Before the availability start time
         return view('middleware.waiting', [
             'availabilityStart' => $availabilityStart,
             'availabilityEnd' => $availabilityEnd,
         ]);
     } elseif ($currentDate->between($availabilityStart, $availabilityEnd)) {
-        // During the availability window
         return redirect()->route('video');
     } else {
-        // After the availability end time
-        return redirect()->route('expired');
+        // return redirect()->route('expired');
+        return view('middleware.expired');
+
     }
 })->name('waiting');
 
