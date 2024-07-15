@@ -31,7 +31,7 @@
 @section('content')
     <main>
         <div class="content">
-            <h1>Your gateway to Watching movies</h1>
+            <h1>Stream Your Movies</h1>
             <h2>Choose Your Payment Method</h2>
             <div class="store-buttons">
                 <button class="store-btn" onclick="window.location.href='{{ route('stripe.checkout', ['price' => 10, 'product' => 'streaming']) }}'">

@@ -1,6 +1,9 @@
 <?php
 
+use Carbon\Carbon;
+use function Laravel\Prompts\text;
 use Illuminate\Support\Facades\DB;
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StripePaymentController;
 
@@ -42,7 +45,7 @@ Route::controller(StripePaymentController::class)->group(function(){
     Route::get('stripe','stripe')->name('stripe.index');
     Route::get('stripe/checkout','stripeCheckout')->name('stripe.checkout');
     Route::get('stripe/checkout/success','stripeCheckoutSuccess')->name('stripe.checkout.success');
-    Route::post('/stripe/verify',  'verify')->name('stripe.verify');
+    Route::post('/payment/verified',  'verify')->name('stripe.verify');
 });
 
 
@@ -50,17 +53,56 @@ Route::get('/verify', function () {
     return view('verify-code-stripe');
 })->name('verify');
 
+// Route::get('/video', function () {
+//     return view('video');
+// })->name('video')->middleware(['verify.access', 'verify.date']);
+
 Route::get('/video', function () {
-    return view('video');
+    $otp = session('otp');
+    $playbackInfo = session('playbackInfo');
+
+    return view('video', [
+        'otp' => $otp,
+        'playbackInfo' => $playbackInfo,
+    ]);
 })->name('video')->middleware(['verify.access', 'verify.date']);
 
+
 Route::get('/unauthorized', function () {
-    return view('unauthorized');
+    return view('middleware.unauthorized');
 })->name('unauthorized');
 
 Route::get('/waiting', function () {
-    return view('waiting');
+    $availabilityStart = session('availability_start');
+    $availabilityEnd = session('availability_end');
+
+    if (!$availabilityStart || !$availabilityEnd) {
+        return redirect()->route('unauthorized');
+    }
+
+    $availabilityStart = Carbon::parse($availabilityStart);
+    $availabilityEnd = Carbon::parse($availabilityEnd);
+    $currentDate = Carbon::now('Asia/Thimphu');
+
+    if ($currentDate->lt($availabilityStart)) {
+        // Before the availability start time
+        return view('middleware.waiting', [
+            'availabilityStart' => $availabilityStart,
+            'availabilityEnd' => $availabilityEnd,
+        ]);
+    } elseif ($currentDate->between($availabilityStart, $availabilityEnd)) {
+        // During the availability window
+        return redirect()->route('video');
+    } else {
+        // After the availability end time
+        return redirect()->route('expired');
+    }
 })->name('waiting');
+
+Route::get('/expired', function () {
+    return view('middleware.expired');
+})->name('expired');
+
 
 Route::get('/test-db', function () {
     try {

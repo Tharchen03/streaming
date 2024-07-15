@@ -8,37 +8,25 @@ use Carbon\Carbon;
 
 class VerifyDate
 {
-    // public function handle(Request $request, Closure $next)
-    // {
-    //     $availabilityDate = session('availability_date');
-
-    //     if (!$availabilityDate) {
-    //         return redirect('/unauthorized');
-    //     }
-
-    //     $availabilityDate = Carbon::parse($availabilityDate);
-    //     $currentDate = Carbon::now();
-
-    //     if ($currentDate->lt($availabilityDate)) {
-    //         return redirect()->route('waiting');
-    //     }
-
-    //     return $next($request);
-    // }
-
     public function handle(Request $request, Closure $next)
     {
-        $availabilityDate = session('availability_date');
+        $availabilityStart = session('availability_start');
+        $availabilityEnd = session('availability_end');
 
-        if (!$availabilityDate) {
-            return redirect()->route('unauthorized');
+        if (!$availabilityStart || !$availabilityEnd) {
+            return redirect('/unauthorized');
         }
 
-        $availabilityDate = Carbon::parse($availabilityDate);
+        $availabilityStart = Carbon::parse($availabilityStart);
+        $availabilityEnd = Carbon::parse($availabilityEnd);
         $currentDate = Carbon::now();
 
-        if ($currentDate->lt($availabilityDate)) {
+        if ($currentDate->lt($availabilityStart)) {
             return redirect()->route('waiting');
+        }
+
+        if ($currentDate->gt($availabilityEnd)) {
+            return redirect()->route('expired');
         }
 
         return $next($request);
