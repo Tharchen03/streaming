@@ -5,6 +5,7 @@
 </head>
 <body>
     <h1>{{ $detail['subject'] }}</h1>
+    <h1>{{ $subject }}</h1>
     <p>Dear {{ $detail['name'] }},</p>
     <p>Thank you for your purchase of . The amount of ${{ $detail['price'] / 100 }} has been successfully charged to your card.</p>
     <p>customer email ID <strong>{!! $detail['email_id'] !!}</strong></p>
