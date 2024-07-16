@@ -80,66 +80,7 @@ class StripePaymentController extends Controller
         return redirect()->route('verify')->with('success', 'Payment successful.');
         // return view('verify-code-stripe', ['customerEmail' => $customerEmail]);
     }
-
-    // public function verify(Request $request)
-    // {
-    //     $request->validate([
-    //         'code' => 'required|string',
-    //     ]);
-    //     $payment = Payment::where('random_text', $request->code)->first();
-    //     if ($payment) {
-    //         UserSession::create([
-    //             'payment_id' => $payment->id,
-    //             'session_key' => 'verified',
-    //             'ip_address' => $request->ip(),
-    //             'session_value' => 'true',
-    //         ]);
-
-    //         session([
-    //             'payment_id' => $payment->id,
-    //             'verified' => true,
-    //             'availability_date' => '2024-09-02', // Set the specific date
-    //         ]);
-    //         session(['payment_id' => $payment->id]);
-
-    //         return redirect('video');
-    //     } else {
-    //         return redirect()->back()->withErrors(['code' => 'Verification code is incorrect.']);
-    //     }
-    // }
-
-    // public function verify(Request $request)
-    // {
-    //     $request->validate([
-    //         'code' => 'required|string',
-    //     ]);
-    //     $payment = Payment::where('random_text', $request->code)->first();
-    //     if ($payment) {
-    //         UserSession::create([
-    //             'payment_id' => $payment->id,
-    //             'session_key' => 'verified',
-    //             'ip_address' => $request->ip(),
-    //             'session_value' => 'true',
-    //         ]);
-
-    //         session([
-    //             'payment_id' => $payment->id,
-    //             'verified' => true,
-    //             'availability_date' => '2024-01-01',
-    //         ]);
-
-    //         $videoId = 'f2c1b44e9ed24d08972bcc8cefea38fb'; 
-    //         $videoDetails = $this->vdoCipher->getVideoById($videoId);
-    //         session([
-    //             'otp' => $videoDetails['otp'],
-    //             'playbackInfo' => $videoDetails['playbackInfo'],
-    //         ]);
-    //         return redirect()->route('video');
-    //         } else {
-    //         return redirect()->back()->withErrors(['code' => 'Verification code is incorrect.']);
-    //     }
-    // }
-
+    
     public function verify(Request $request)
     {
         $request->validate([

@@ -13,6 +13,7 @@
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.5",
         "mongodb/laravel-mongodb": "^4.1",
+        "nesbot/carbon": "^2.72",
         "stripe/stripe-php": "^13.18"
     },
     "require-dev": {
